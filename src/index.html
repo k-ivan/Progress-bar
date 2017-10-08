@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="./css/progress.css">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      text-align: center;
+    }
+    button {
+      padding: 0.875rem 1.875rem;
+      cursor: pointer;
+    }
+    button + button {
+      margin-left: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <button id="random">random</button>
+    <button id="test20">20%</button>
+    <button id="done">100%</button>
+  </div>
+
+  <script src="./js/progress.js"></script>
+  <script>
+    document.getElementById('random').addEventListener('click', function() {
+      Progress.set();
+    });
+    document.getElementById('test20').addEventListener('click', function() {
+      Progress.set(20);
+    });
+    document.getElementById('done').addEventListener('click', function() {
+      Progress.done();
+    });
+  </script>
+</body>
+</html>
