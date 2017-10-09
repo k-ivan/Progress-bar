@@ -1,4 +1,4 @@
-import css from '../scss/progress.sass';
+import css from '../sass/progress.sass';
 import './components/polyfill';
 import Helpers from './components/helpers';
 
@@ -10,17 +10,37 @@ const Progress = (() => {
     isLoading,
     bar;
 
+  let settings = {
+    position: 'top',
+    timingFunction: 'linear',
+    speed: 300
+  };
+
+  const config = (options = {}) => {
+    for (var name in options) {
+      if (settings.hasOwnProperty(name)) {
+        settings[name] = options[name];
+      }
+    }
+  };
+
   const numRandom = () => Math.round(Math.random() * 100);
 
-  function set(num, position = 'top') {
+  function init() {
     bar = document.getElementById('progress');
     if (!bar) {
       bar = document.createElement('div');
       bar.id = 'progress';
-      bar.className = `loading ${position !== 'top' ? 'loading--bottom' : ''}`;
+      bar.className = `loading ${settings.position === 'bottom' ? 'loading--bottom' : ''}`;
       bar.innerHTML = '<div class="loading__inner">';
+      bar.style[transition] = `all ${settings.speed}ms ${settings.timingFunction}`;
       document.body.appendChild(bar);
     }
+    isLoading = true;
+  }
+
+  function set(num) {
+    init();
 
     num = (Number.isInteger(num) && num < 100)
       ? num
@@ -28,9 +48,7 @@ const Progress = (() => {
 
     setTimeout(() => {
       bar.style[transform] = `translate3d(${num}%, 0, 0)`;
-    }, 10);
-
-    isLoading = true;
+    }, 0);
   }
 
   function done() {
@@ -45,15 +63,17 @@ const Progress = (() => {
       bar.style.height = 0;
       setTimeout(() => {
         bar.parentNode.removeChild(bar);
+        bar = null;
         isLoading = false;
-      }, 300);
+      }, settings.speed);
     });
 
   }
 
   return {
     set,
-    done
+    done,
+    config
   };
 
 })();
